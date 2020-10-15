@@ -6,6 +6,7 @@ highlighted_1 = (255, 0, 0)
 highlighted_2 = (0, 0, 255)
 unhighlighted = (127, 127, 127)
 
+
 class Vertex:
     def __init__(self, name):
         self.name = name
@@ -40,6 +41,10 @@ class Graph:
             return True
         else:
             return False
+
+    @staticmethod
+    def get_edge(x, y):
+        return str(x) + str(y)
 
     def print_graph(self):
         for key in sorted(list(self.vertices.keys())):
