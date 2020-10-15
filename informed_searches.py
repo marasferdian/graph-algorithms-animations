@@ -22,8 +22,8 @@ class InformedSearchGraph(Graph):
         dist[start_node.name] = 0
         prev[start_node.name] = -1
         heapq.heappush(heap, (0, start_node.name))
-        #anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
-        #anim.next_frame()
+        anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
+        anim.next_frame()
         print(dist)
         while len(heap) > 0:
             d, node = heapq.heappop(heap)
@@ -34,20 +34,62 @@ class InformedSearchGraph(Graph):
             if node == target_node.name:
                 for each in self.vertices.keys():
                     anim.set_node_color(labelsDict[each], color=unhighlighted)
-                    anim.next_frame()
                 anim.set_node_color(labelsDict[target_node.name], color=highlighted_2)
                 anim.next_frame()
-                previousNodeLabel = target_node.name
-                while previousNodeLabel != -1:
-                    anim.set_node_color(labelsDict[previousNodeLabel], color=highlighted_2)
+                previous_node_label = target_node.name
+                while previous_node_label != -1:
+                    anim.set_node_color(labelsDict[previous_node_label], color=highlighted_2)
                     anim.next_frame()
-                    previousNodeLabel = prev[previousNodeLabel]
+                    previous_node_label = prev[previous_node_label]
                 return d
             for x in self.vertices[node].neighbors:
                 e = self.get_edge(node, x)
                 if e not in edges.keys():
                     e = self.get_edge(x, node)
                 cost = d + edges[e]
+                if cost < dist[x]:
+                    prev[x] = node
+                    anim.set_node_color(labelsDict[x], color=highlighted_1)
+                    anim.next_frame()
+                    dist[x] = cost
+                    heapq.heappush(heap, (cost, x))
+        return np.inf
+
+    def a_star_search(self, start_node, target_node):
+        heap = []
+        dist = {}
+        prev = {}
+        for v in self.vertices.keys():
+            dist[v] = np.inf
+        dist[start_node.name] = 0 + heuristic[start_node.name]
+        previous_heuristic_value = heuristic[start_node.name]
+        prev[start_node.name] = -1
+        heapq.heappush(heap, (heuristic[start_node.name], start_node.name))
+        anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
+        anim.next_frame()
+        while len(heap) > 0:
+            d, node = heapq.heappop(heap)
+            anim.set_node_color(labelsDict[node], color=highlighted_2)
+            anim.next_frame()
+            if d != dist[node]:
+                continue
+            if node == target_node.name:
+                for each in self.vertices.keys():
+                    anim.set_node_color(labelsDict[each], color=unhighlighted)
+                anim.set_node_color(labelsDict[target_node.name], color=highlighted_2)
+                anim.next_frame()
+                previous_node_label = target_node.name
+                while previous_node_label != -1:
+                    anim.set_node_color(labelsDict[previous_node_label], color=highlighted_2)
+                    anim.next_frame()
+                    previous_node_label = prev[previous_node_label]
+                return d
+            for x in self.vertices[node].neighbors:
+                previous_heuristic_value = heuristic[node]
+                e = self.get_edge(node, x)
+                if e not in edges.keys():
+                    e = self.get_edge(x, node)
+                cost = d + edges[e] + heuristic[x] - previous_heuristic_value
                 if cost < dist[x]:
                     prev[x] = node
                     anim.set_node_color(labelsDict[x], color=highlighted_1)
@@ -82,6 +124,10 @@ locations = find_optimal_coords(13, adj_list, verbose=True, tolerance=1e-4, max_
 
 anim = GraphAnimation(13, adj_list, locations[:, 0], locations[:, 1], labels=labels, initial_color=unhighlighted)
 anim.next_frame()
-print(graph.uniform_cost_search(start, target))
+print(graph.uniform_cost_search(start,target))
 anim.save_gif('ucs.gif', node_radius=20, size=(800, 800), fps=1.2)
 anim.save_json('ucs.json')
+
+#print(graph.a_star_search(start, target))
+#anim.save_gif('a_star.gif', node_radius=20, size=(800, 800), fps=1.2)
+#anim.save_json('a_star.json')
