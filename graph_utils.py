@@ -3,7 +3,7 @@ from graphanim.graphanim.utils import find_optimal_coords, random_graph
 import numpy as np
 
 highlighted_1 = (255, 0, 0)
-highlighted_2 = (0, 0, 255)
+highlighted_2 = (0, 220, 0)
 unhighlighted = (127, 127, 127)
 
 

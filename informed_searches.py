@@ -16,12 +16,14 @@ class InformedSearchGraph(Graph):
     def uniform_cost_search(self, start_node, target_node):
         heap = []
         dist = {}
+        prev = {}
         for v in self.vertices.keys():
             dist[v] = np.inf
         dist[start_node.name] = 0
+        prev[start_node.name] = -1
         heapq.heappush(heap, (0, start_node.name))
-        anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
-        anim.next_frame()
+        #anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
+        #anim.next_frame()
         print(dist)
         while len(heap) > 0:
             d, node = heapq.heappop(heap)
@@ -30,6 +32,16 @@ class InformedSearchGraph(Graph):
             if d != dist[node]:
                 continue
             if node == target_node.name:
+                for each in self.vertices.keys():
+                    anim.set_node_color(labelsDict[each], color=unhighlighted)
+                    anim.next_frame()
+                anim.set_node_color(labelsDict[target_node.name], color=highlighted_2)
+                anim.next_frame()
+                previousNodeLabel = target_node.name
+                while previousNodeLabel != -1:
+                    anim.set_node_color(labelsDict[previousNodeLabel], color=highlighted_2)
+                    anim.next_frame()
+                    previousNodeLabel = prev[previousNodeLabel]
                 return d
             for x in self.vertices[node].neighbors:
                 e = self.get_edge(node, x)
@@ -37,11 +49,11 @@ class InformedSearchGraph(Graph):
                     e = self.get_edge(x, node)
                 cost = d + edges[e]
                 if cost < dist[x]:
+                    prev[x] = node
                     anim.set_node_color(labelsDict[x], color=highlighted_1)
                     anim.next_frame()
                     dist[x] = cost
                     heapq.heappush(heap, (cost, x))
-
         return np.inf
 
 
@@ -65,8 +77,8 @@ for key in sorted(list(graph.vertices.keys())):
         edgeList.append((labelsDict[neighbor], edges[edge]))
     adj_list.append(edgeList)
 
-locations = find_optimal_coords(13, adj_list, verbose=True, tolerance=1e-4, max_iter=1000, mutation_rate=0.4,
-                                curved_edges=False, spring_mode='edges_only', node_spacing_factor=0.5)
+locations = find_optimal_coords(13, adj_list, verbose=True, tolerance=1e-4, max_iter=200, mutation_rate=0.4,
+                               curved_edges=False, spring_mode='edges_only', node_spacing_factor=0.5)
 
 anim = GraphAnimation(13, adj_list, locations[:, 0], locations[:, 1], labels=labels, initial_color=unhighlighted)
 anim.next_frame()
