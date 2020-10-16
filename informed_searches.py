@@ -38,9 +38,12 @@ class InformedSearchGraph(Graph):
                 anim.next_frame()
                 previous_node_label = target_node.name
                 while previous_node_label != -1:
+                    current = previous_node_label
                     anim.set_node_color(labelsDict[previous_node_label], color=highlighted_2)
                     anim.next_frame()
                     previous_node_label = prev[previous_node_label]
+                    if previous_node_label != -1:
+                        anim.set_edge_color(labelsDict[current], labelsDict[previous_node_label], highlighted_2)
                 return d
             for x in self.vertices[node].neighbors:
                 e = self.get_edge(node, x)
@@ -50,6 +53,9 @@ class InformedSearchGraph(Graph):
                 if cost < dist[x]:
                     prev[x] = node
                     anim.set_node_color(labelsDict[x], color=highlighted_1)
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=highlighted_1)
+                    anim.next_frame()
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=unhighlighted)
                     anim.next_frame()
                     dist[x] = cost
                     heapq.heappush(heap, (cost, x))
@@ -80,9 +86,12 @@ class InformedSearchGraph(Graph):
                 anim.next_frame()
                 previous_node_label = target_node.name
                 while previous_node_label != -1:
+                    current = previous_node_label
                     anim.set_node_color(labelsDict[previous_node_label], color=highlighted_2)
                     anim.next_frame()
                     previous_node_label = prev[previous_node_label]
+                    if previous_node_label != -1:
+                        anim.set_edge_color(labelsDict[current], labelsDict[previous_node_label], highlighted_2)
                 return d
             for x in self.vertices[node].neighbors:
                 previous_heuristic_value = heuristic[node]
@@ -93,6 +102,9 @@ class InformedSearchGraph(Graph):
                 if cost < dist[x]:
                     prev[x] = node
                     anim.set_node_color(labelsDict[x], color=highlighted_1)
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=highlighted_1)
+                    anim.next_frame()
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=unhighlighted)
                     anim.next_frame()
                     dist[x] = cost
                     heapq.heappush(heap, (cost, x))

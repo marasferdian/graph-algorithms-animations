@@ -78,20 +78,20 @@ for key in sorted(list(graph.vertices.keys())):
         edges.append((labelsDict[neighbor], 1))
     adj_list.append(edges)
 
-locations = find_optimal_coords(10, adj_list, verbose=True, tolerance=1e-4, max_iter=1000, mutation_rate=0.4,
+locations = find_optimal_coords(10, adj_list, verbose=True, tolerance=1e-4, max_iter=200, mutation_rate=0.4,
                                 curved_edges=False, spring_mode='edges_only', node_spacing_factor=0.5)
 
 anim = GraphAnimation(10, adj_list, locations[:, 0], locations[:, 1], labels=labels, initial_color=unhighlighted)
 anim.next_frame()
-# graph.dfs(start)
-# graph.depth_limited_dfs(start, target, 3) # try depth 3 to see the algorithm at work :)
+#graph.dfs(start)
+#graph.depth_limited_dfs(start, target, 3) # try depth 3 to see the algorithm at work :)
 graph.iterative_deepening_search(start, target)
 anim.next_frame()
-# anim.save_gif('dfs.gif', node_radius=20, size=(800, 800), fps=1.2)
-# anim.save_json('dfs.json')
+#anim.save_gif('dfs.gif', node_radius=20, size=(500, 500), fps=1.2)
+#anim.save_json('dfs.json')
 
-# anim.save_gif('depth-limited.gif', node_radius=20, size=(800, 800), fps=1.2)
-# anim.save_json('depth-limited.json')
+#anim.save_gif('depth-limited.gif', node_radius=20, size=(500, 500), fps=1.2)
+#anim.save_json('depth-limited.json')
 
-anim.save_gif('iterative-deepening.gif', node_radius=20, size=(800, 800), fps=1.2)
+anim.save_gif('iterative-deepening.gif', node_radius=20, size=(500, 500), fps=1.2)
 anim.save_json('iterative-deepening.json')

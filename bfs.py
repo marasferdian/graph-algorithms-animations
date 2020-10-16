@@ -59,5 +59,5 @@ anim.next_frame()
 graph.breadth_first_search(start)
 anim.next_frame()
 
-anim.save_gif('bfs.gif', node_radius=20, size=(800, 800), fps=1.2)
+anim.save_gif('bfs.gif', node_radius=20, size=(500, 500), fps=1.2)
 anim.save_json('bfs.json')
