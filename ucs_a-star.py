@@ -12,7 +12,7 @@ edges = {'AB': 71, 'AF': 151, 'BC': 75, 'CD': 118, 'CF': 140, 'DE': 111, 'EL': 7
          'MJ': 120, 'FG': 80, 'FH': 99, 'GJ': 148, 'GI': 97, 'IJ': 138, 'IK': 101, 'HK': 211}
 
 
-class InformedSearchGraph(Graph):
+class WeightedGraph(Graph):
     def uniform_cost_search(self, start_node, target_node):
         heap = []
         dist = {}
@@ -111,7 +111,7 @@ class InformedSearchGraph(Graph):
         return np.inf
 
 
-graph = InformedSearchGraph()
+graph = WeightedGraph()
 start = Vertex('A')
 target = Vertex('K')
 graph.add_vertex(start)
