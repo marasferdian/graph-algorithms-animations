@@ -110,6 +110,50 @@ class WeightedGraph(Graph):
                     heapq.heappush(heap, (cost, x))
         return np.inf
 
+    def greedy_BFS(self, start_node, target_node):
+        heap = []
+        dist = {}
+        prev = {}
+        for v in self.vertices.keys():
+            dist[v] = np.inf
+        dist[start_node.name] = heuristic[start_node.name]
+        prev[start_node.name] = -1
+        heapq.heappush(heap, (heuristic[start_node.name], start_node.name))
+        anim.set_node_color(labelsDict[start_node.name], color=highlighted_1)
+        anim.next_frame()
+        while len(heap) > 0:
+            d, node = heapq.heappop(heap)
+            anim.set_node_color(labelsDict[node], color=highlighted_2)
+            anim.next_frame()
+            if d != dist[node]:
+                continue
+            if node == target_node.name:
+                for each in self.vertices.keys():
+                    anim.set_node_color(labelsDict[each], color=unhighlighted)
+                anim.set_node_color(labelsDict[target_node.name], color=highlighted_2)
+                anim.next_frame()
+                previous_node_label = target_node.name
+                while previous_node_label != -1:
+                    current = previous_node_label
+                    anim.set_node_color(labelsDict[previous_node_label], color=highlighted_2)
+                    anim.next_frame()
+                    previous_node_label = prev[previous_node_label]
+                    if previous_node_label != -1:
+                        anim.set_edge_color(labelsDict[current], labelsDict[previous_node_label], highlighted_2)
+                return d
+            for x in self.vertices[node].neighbors:
+                cost = heuristic[x]
+                if cost < dist[x]:
+                    prev[x] = node
+                    anim.set_node_color(labelsDict[x], color=highlighted_1)
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=highlighted_1)
+                    anim.next_frame()
+                    anim.set_edge_color(labelsDict[x], labelsDict[node], color=unhighlighted)
+                    anim.next_frame()
+                    dist[x] = cost
+                    heapq.heappush(heap, (cost, x))
+        return np.inf
+
 
 graph = WeightedGraph()
 start = Vertex('A')
@@ -132,14 +176,18 @@ for key in sorted(list(graph.vertices.keys())):
     adj_list.append(edgeList)
 
 locations = find_optimal_coords(13, adj_list, verbose=True, tolerance=1e-4, max_iter=200, mutation_rate=0.4,
-                               curved_edges=False, spring_mode='edges_only', node_spacing_factor=0.5)
+                                curved_edges=False, spring_mode='edges_only', node_spacing_factor=0.5)
 
 anim = GraphAnimation(13, adj_list, locations[:, 0], locations[:, 1], labels=labels, initial_color=unhighlighted)
 anim.next_frame()
-print(graph.uniform_cost_search(start,target))
-anim.save_gif('ucs.gif', node_radius=20, size=(800, 800), fps=1.2)
-anim.save_json('ucs.json')
+#print(graph.uniform_cost_search(start, target))
+#anim.save_gif('ucs.gif', node_radius=20, size=(800, 800), fps=1.2)
+#anim.save_json('ucs.json')
 
-#print(graph.a_star_search(start, target))
-#anim.save_gif('a_star.gif', node_radius=20, size=(800, 800), fps=1.2)
-#anim.save_json('a_star.json')
+# print(graph.a_star_search(start, target))
+# anim.save_gif('a_star.gif', node_radius=20, size=(800, 800), fps=1.2)
+# anim.save_json('a_star.json')
+
+print(graph.greedy_BFS(start, target))
+anim.save_gif('greedyBFS.gif', node_radius=20, size=(800, 800), fps=1.2)
+anim.save_json('greedyBFS.json')
