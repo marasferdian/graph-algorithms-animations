@@ -1,7 +1,7 @@
 from graphanim.graphanim.animation import GraphAnimation
-from graphanim.graphanim.utils import find_optimal_coords, random_graph
+from graphanim.graphanim.utils import find_optimal_coords
 import numpy as np
-from graph_utils import Graph, Vertex, unhighlighted, highlighted_1, highlighted_2
+from algorithmsImplementation.graph_utils import Graph, Vertex, unhighlighted, highlighted_1, highlighted_2
 import heapq
 
 labels = 'ABCDEFGHIJKLM'

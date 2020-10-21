@@ -1,7 +1,6 @@
 from graphanim.graphanim.animation import GraphAnimation
-from graphanim.graphanim.utils import find_optimal_coords, random_graph
-import numpy as np
-from graph_utils import Graph, Vertex, highlighted_2, highlighted_1, unhighlighted
+from graphanim.graphanim.utils import find_optimal_coords
+from algorithmsImplementation.graph_utils import Graph, Vertex, highlighted_2, highlighted_1, unhighlighted
 
 labels = 'ABCDEFGHIJ'
 labelsDict = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
@@ -84,9 +83,13 @@ locations = find_optimal_coords(10, adj_list, verbose=True, tolerance=1e-4, max_
 anim = GraphAnimation(10, adj_list, locations[:, 0], locations[:, 1], labels=labels, initial_color=unhighlighted)
 anim.next_frame()
 #graph.dfs(start)
+
 #graph.depth_limited_dfs(start, target, 3) # try depth 3 to see the algorithm at work :)
+
 graph.iterative_deepening_search(start, target)
+
 anim.next_frame()
+
 #anim.save_gif('dfs.gif', node_radius=20, size=(500, 500), fps=1.2)
 #anim.save_json('dfs.json')
 

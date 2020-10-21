@@ -1,7 +1,6 @@
-import numpy as np
 from graphanim.graphanim.animation import GraphAnimation
-from graphanim.graphanim.utils import find_optimal_coords, random_graph
-from graph_utils import Vertex, Graph, highlighted_1, highlighted_2, unhighlighted
+from graphanim.graphanim.utils import find_optimal_coords
+from algorithmsImplementation.graph_utils import Vertex, Graph, highlighted_1, highlighted_2, unhighlighted
 
 labels = 'ABCDEFGHIJ'
 labelsDict = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9}
